@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three Level Block Breaker</title>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #111827;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+
+    .game-container {
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    #info {
+      margin-bottom: 12px;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    canvas {
+      background: #1f2937;
+      border: 4px solid #10b981;
+      display: block;
+      margin: 0 auto;
+    }
+
+    #message {
+      margin-top: 15px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .controls {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #d1d5db;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 18px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background: #10b981;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #059669;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <h1>Three Level Block Breaker</h1>
+
+    <div id="info">
+      Level: <span id="levelDisplay">1</span> / 3<br>
+      Score: <span id="score">0</span>
+    </div>
+
+    <canvas id="game" width="500" height="400"></canvas>
+
+    <div class="controls">
+      Left/Right Arrows: Move Paddle | Up Arrow: Start Level
+    </div>
+
+    <div id="message">Press the Up Arrow to start Level 1</div>
+
+    <button onclick="restartGame()">Restart</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+
+    const scoreDisplay = document.getElementById("score");
+    const levelDisplay = document.getElementById("levelDisplay");
+    const message = document.getElementById("message");
+
+    let score = 0;
+    let currentLevel = 1;
+
+    let gameOver = false;
+    let gameWon = false;
+    let levelRunning = false;
+
+    let rightPressed = false;
+    let leftPressed = false;
+
+    const paddle = {
+      width: 90,
+      height: 12,
+      x: canvas.width / 2 - 45,
+      y: canvas.height - 25,
+      speed: 7
+    };
+
+    const ball = {
+      x: canvas.width / 2,
+      y: canvas.height - 45,
+      radius: 8,
+      dx: 4,
+      dy: -4,
+      baseSpeedX: 4,
+      baseSpeedY: -4
+    };
+
+    const brickSettings = {
+      width: 50,
+      height: 18,
+      padding: 8,
+      offsetTop: 45,
+      offsetLeft: 22
+    };
+
+    let bricks = [];
+
+    function startGame() {
+      score = 0;
+      currentLevel = 1;
+      gameOver = false;
+      gameWon = false;
+
+      scoreDisplay.textContent = score;
+      levelDisplay.textContent = currentLevel;
+
+      setupLevel(currentLevel);
+      drawGame();
+
+      requestAnimationFrame(updateGame);
+    }
+
+    function setupLevel(level) {
+      levelRunning = false;
+
+      paddle.x = canvas.width / 2 - paddle.width / 2;
+      paddle.y = canvas.height - 25;
+
+      ball.x = canvas.width / 2;
+      ball.y = canvas.height - 45;
+      ball.dx = ball.baseSpeedX;
+      ball.dy = ball.baseSpeedY;
+
+      createBricks(level);
+
+      levelDisplay.textContent = currentLevel;
+      message.textContent = "Press the Up Arrow to start Level " + currentLevel;
+
+      drawGame();
+    }
+
+    function startLevel() {
+      if (gameOver || gameWon || levelRunning) return;
+
+      levelRunning = true;
+      message.textContent = "Level " + currentLevel;
+    }
+
+    function createBricks(level) {
+      bricks = [];
+
+      if (level === 1) {
+        createLevelOne();
+      } else if (level === 2) {
+        createLevelTwo();
+      } else if (level === 3) {
+        createLevelThree();
+      }
+    }
+
+    function addBrick(x, y, type = "normal") {
+      bricks.push({
+        x: x,
+        y: y,
+        visible: true,
+        type: type
+      });
+    }
+
+    function createLevelOne() {
+      // Standard full grid pattern.
+      const rows = 4;
+      const cols = 8;
+
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          const x =
+            col * (brickSettings.width + brickSettings.padding) +
+            brickSettings.offsetLeft;
+
+          const y =
+            row * (brickSettings.height + brickSettings.padding) +
+            brickSettings.offsetTop;
+
+          addBrick(x, y);
+        }
+      }
+    }
+
+    function createLevelTwo() {
+      // Staggered pattern with gaps.
+      const rows = 5;
+      const cols = 8;
+
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          if ((row + col) % 2 === 0 || row === 0) {
+            const x =
+              col * (brickSettings.width + brickSettings.padding) +
+              brickSettings.offsetLeft;
+
+            const y =
+              row * (brickSettings.height + brickSettings.padding) +
+              brickSettings.offsetTop;
+
+            addBrick(x, y);
+          }
+        }
+      }
+    }
+
+    function createLevelThree() {
+      // Pyramid / diamond-style pattern.
+      const pattern = [
+        [0, 0, 0, 1, 1, 0, 0, 0],
+        [0, 0, 1, 1, 1, 1, 0, 0],
+        [0, 1, 1, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 1, 1, 0, 0, 1, 1, 0]
+      ];
+
+      for (let row = 0; row < pattern.length; row++) {
+        for (let col = 0; col < pattern[row].length; col++) {
+          if (pattern[row][col] === 1) {
+            const x =
+              col * (brickSettings.width + brickSettings.padding) +
+              brickSettings.offsetLeft;
+
+            const y =
+              row * (brickSettings.height + brickSettings.padding) +
+              brickSettings.offsetTop;
+
+            // One special speed brick in the third level.
+            if (row === 1 && col === 3) {
+              addBrick(x, y, "speed");
+            } else {
+              addBrick(x, y);
+            }
+          }
+        }
+      }
+    }
+
+    function updateGame() {
+      if (gameOver || gameWon) return;
+
+      movePaddle();
+
+      if (levelRunning) {
+        moveBall();
+        checkWallCollision();
+        checkPaddleCollision();
+        checkBrickCollision();
+      }
+
+      drawGame();
+
+      requestAnimationFrame(updateGame);
+    }
+
+    function movePaddle() {
+      if (rightPressed && paddle.x + paddle.width < canvas.width) {
+        paddle.x += paddle.speed;
+      }
+
+      if (leftPressed && paddle.x > 0) {
+        paddle.x -= paddle.speed;
+      }
+    }
+
+    function moveBall() {
+      ball.x += ball.dx;
+      ball.y += ball.dy;
+    }
+
+    function checkWallCollision() {
+      if (
+        ball.x + ball.radius > canvas.width ||
+        ball.x - ball.radius < 0
+      ) {
+        ball.dx = -ball.dx;
+      }
+
+      if (ball.y - ball.radius < 0) {
+        ball.dy = -ball.dy;
+      }
+
+      if (ball.y + ball.radius > canvas.height) {
+        endGame();
+      }
+    }
+
+    function checkPaddleCollision() {
+      const ballBottom = ball.y + ball.radius;
+      const ballTop = ball.y - ball.radius;
+      const ballRight = ball.x + ball.radius;
+      const ballLeft = ball.x - ball.radius;
+
+      const paddleTop = paddle.y;
+      const paddleBottom = paddle.y + paddle.height;
+      const paddleLeft = paddle.x;
+      const paddleRight = paddle.x + paddle.width;
+
+      if (
+        ballBottom >= paddleTop &&
+        ballTop <= paddleBottom &&
+        ballRight >= paddleLeft &&
+        ballLeft <= paddleRight &&
+        ball.dy > 0
+      ) {
+        ball.dy = -Math.abs(ball.dy);
+
+        const paddleCenter = paddle.x + paddle.width / 2;
+        const hitPosition = ball.x - paddleCenter;
+
+        ball.dx = hitPosition * 0.08;
+      }
+    }
+
+    function checkBrickCollision() {
+      for (let i = 0; i < bricks.length; i++) {
+        const brick = bricks[i];
+
+        if (!brick.visible) continue;
+
+        if (
+          ball.x + ball.radius > brick.x &&
+          ball.x - ball.radius < brick.x + brickSettings.width &&
+          ball.y + ball.radius > brick.y &&
+          ball.y - ball.radius < brick.y + brickSettings.height
+        ) {
+          brick.visible = false;
+          ball.dy = -ball.dy;
+
+          score++;
+          scoreDisplay.textContent = score;
+
+          if (brick.type === "speed") {
+            speedUpBall();
+            message.textContent = "Speed brick hit! The ball is faster!";
+          }
+
+          if (levelCleared()) {
+            advanceLevel();
+          }
+
+          return;
+        }
+      }
+    }
+
+    function speedUpBall() {
+      const speedIncrease = 1.15;
+
+      ball.dx *= speedIncrease;
+      ball.dy *= speedIncrease;
+    }
+
+    function levelCleared() {
+      return bricks.every(brick => !brick.visible);
+    }
+
+    function advanceLevel() {
+      levelRunning = false;
+
+      if (currentLevel < 3) {
+        currentLevel++;
+        setupLevel(currentLevel);
+      } else {
+        winGame();
+      }
+    }
+
+    function drawGame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      drawBricks();
+      drawPaddle();
+      drawBall();
+    }
+
+    function drawBricks() {
+      bricks.forEach(brick => {
+        if (!brick.visible) return;
+
+        if (brick.type === "speed") {
+          ctx.fillStyle = "#a855f7";
+        } else if (currentLevel === 1) {
+          ctx.fillStyle = "#f59e0b";
+        } else if (currentLevel === 2) {
+          ctx.fillStyle = "#3b82f6";
+        } else {
+          ctx.fillStyle = "#ef4444";
+        }
+
+        ctx.fillRect(
+          brick.x,
+          brick.y,
+          brickSettings.width,
+          brickSettings.height
+        );
+
+        ctx.strokeStyle = "#111827";
+        ctx.strokeRect(
+          brick.x,
+          brick.y,
+          brickSettings.width,
+          brickSettings.height
+        );
+      });
+    }
+
+    function drawPaddle() {
+      ctx.fillStyle = "#10b981";
+      ctx.fillRect(
+        paddle.x,
+        paddle.y,
+        paddle.width,
+        paddle.height
+      );
+    }
+
+    function drawBall() {
+      ctx.beginPath();
+      ctx.arc(
+        ball.x,
+        ball.y,
+        ball.radius,
+        0,
+        Math.PI * 2
+      );
+      ctx.fillStyle = "#e5e7eb";
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function endGame() {
+      gameOver = true;
+      levelRunning = false;
+      message.textContent = "Game Over! Press Restart to try again.";
+      drawGame();
+    }
+
+    function winGame() {
+      gameWon = true;
+      levelRunning = false;
+      message.textContent = "You win! You cleared all 3 levels!";
+      drawGame();
+    }
+
+    function restartGame() {
+      startGame();
+    }
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "ArrowRight") {
+        rightPressed = true;
+      } else if (event.key === "ArrowLeft") {
+        leftPressed = true;
+      } else if (event.key === "ArrowUp") {
+        startLevel();
+      }
+    });
+
+    document.addEventListener("keyup", event => {
+      if (event.key === "ArrowRight") {
+        rightPressed = false;
+      } else if (event.key === "ArrowLeft") {
+        leftPressed = false;
+      }
+    });
+
+    startGame();
+  </script>
+</body>
+</html>

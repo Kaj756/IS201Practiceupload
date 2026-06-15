@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jakob Empey | Business & Supply Chain Resume</title>
+  <style>
+    :root {
+      --byu-navy: #002E5D;
+      --byu-royal: #0062B8;
+      --byu-light-blue: #E6F0FA;
+      --text: #1f2933;
+      --muted: #5f6b7a;
+      --background: #f4f7fb;
+      --card: #ffffff;
+      --border: #d9e2ec;
+      --accent: #c7d8ea;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--background);
+    }
+
+    .page {
+      max-width: 1080px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .resume {
+      background: var(--card);
+      border-radius: 18px;
+      box-shadow: 0 12px 32px rgba(0, 46, 93, 0.16);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--byu-navy), var(--byu-royal));
+      color: white;
+      padding: 42px 48px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.6rem;
+      letter-spacing: 1px;
+    }
+
+    header .headline {
+      margin: 8px 0 0;
+      font-size: 1.08rem;
+      font-weight: 600;
+      opacity: 0.96;
+    }
+
+    header .contact {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      font-size: 0.98rem;
+    }
+
+    header a {
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+    }
+
+    header a:hover {
+      border-bottom-color: white;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+    }
+
+    aside {
+      background: #f8fbff;
+      border-right: 1px solid var(--border);
+      padding: 34px 30px;
+    }
+
+    main {
+      padding: 34px 42px;
+    }
+
+    section {
+      margin-bottom: 32px;
+    }
+
+    section:last-child {
+      margin-bottom: 0;
+    }
+
+    h2 {
+      margin: 0 0 15px;
+      color: var(--byu-navy);
+      font-size: 1.05rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-bottom: 3px solid var(--byu-light-blue);
+      padding-bottom: 8px;
+    }
+
+    h3 {
+      margin: 0;
+      color: #162c46;
+      font-size: 1.08rem;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .summary {
+      background: var(--byu-light-blue);
+      border-left: 5px solid var(--byu-royal);
+      border-radius: 10px;
+      padding: 18px 20px;
+    }
+
+    .item {
+      margin-bottom: 24px;
+    }
+
+    .item:last-child {
+      margin-bottom: 0;
+    }
+
+    .organization {
+      color: var(--byu-royal);
+      font-weight: bold;
+      margin-top: 2px;
+    }
+
+    .date {
+      color: var(--muted);
+      font-size: 0.94rem;
+      margin: 3px 0 9px;
+    }
+
+    ul {
+      margin: 8px 0 0 20px;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 7px;
+    }
+
+    .skills {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .skills li {
+      margin: 0;
+      background: var(--byu-light-blue);
+      color: var(--byu-navy);
+      border: 1px solid var(--accent);
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .compact-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .compact-list li {
+      margin-bottom: 10px;
+    }
+
+    .reference-name {
+      color: #162c46;
+      font-weight: 700;
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+
+    a {
+      color: var(--byu-royal);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 840px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      header,
+      aside,
+      main {
+        padding: 28px 24px;
+      }
+
+      header h1 {
+        font-size: 2.1rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .page {
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+
+      .resume {
+        box-shadow: none;
+        border-radius: 0;
+        border: none;
+      }
+
+      a {
+        color: var(--text);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="resume">
+      <header>
+        <h1>Jakob Empey</h1>
+        <p class="headline">BYU Student | Business Operations | Supply Chain & Data-Focused Roles</p>
+        <div class="contact">
+          <span>American Fork, Utah</span>
+          <span><a href="tel:+18013193107">(801) 319-3107</a></span>
+          <span><a href="mailto:Jakobempey@gmail.com">Jakobempey@gmail.com</a></span>
+        </div>
+      </header>
+
+      <div class="content">
+        <aside>
+          <section>
+            <h2>Business Skills</h2>
+            <ul class="skills">
+              <li>SQL</li>
+              <li>VBA</li>
+              <li>HTML</li>
+              <li>Data Entry</li>
+              <li>Record Accuracy</li>
+              <li>Administrative Support</li>
+              <li>Process Improvement</li>
+              <li>Problem-Solving</li>
+              <li>Decision Making</li>
+              <li>Training & Mentoring</li>
+              <li>Leadership</li>
+              <li>Relationship Building</li>
+              <li>Activity Planning</li>
+              <li>Strong Work Ethic</li>
+              <li>Willingness to Learn</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Education</h2>
+            <div class="item">
+              <h3>Brigham Young University</h3>
+              <p class="organization">Provo, Utah</p>
+              <p class="date">January 2022 – Present</p>
+              <p class="tagline">Current student with coursework and technical skill development relevant to business, data, and operations roles.</p>
+            </div>
+
+            <div class="item">
+              <h3>American Fork High School</h3>
+              <p class="organization">American Fork, Utah</p>
+              <p class="date">2015 – 2019</p>
+              <p>High School Graduate</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Language</h2>
+            <p>Intermediate Portuguese</p>
+          </section>
+
+          <section>
+            <h2>Awards & Honors</h2>
+            <ul>
+              <li>Director’s Service Award, 2018–2019</li>
+              <li>Eagle Scout Award, April 2016</li>
+              <li>Section Leader, American Fork Marching Band</li>
+              <li>Outstanding Symphonic Woodwind Recipient, 2016</li>
+            </ul>
+          </section>
+        </aside>
+
+        <main>
+          <section class="summary">
+            <h2>Professional Summary</h2>
+            <p>
+              Detail-oriented BYU student seeking opportunities in supply chain management,
+              operations, logistics, procurement, business administration, or business analysis.
+              Experienced in data entry, administrative coordination, team leadership, training,
+              customer-facing communication, and supporting organized operations in fast-paced
+              environments. Technical skills include SQL, VBA, and HTML.
+            </p>
+          </section>
+
+          <section>
+            <h2>Experience</h2>
+
+            <div class="item">
+              <h3>Student Secretary</h3>
+              <p class="organization">BYU Department of Exercise Sciences</p>
+              <p class="date">January 2025 – Present</p>
+              <ul>
+                <li>Provide administrative support for a university department serving students, faculty, and staff.</li>
+                <li>Assist with communication, scheduling support, records, and day-to-day office coordination.</li>
+                <li>Use organization, accuracy, and professionalism to help department operations run smoothly.</li>
+              </ul>
+            </div>
+
+            <div class="item">
+              <h3>Data Entry Specialist</h3>
+              <p class="organization">Hinckley Center, BYU Campus</p>
+              <p class="date">January 2023 – Present</p>
+              <ul>
+                <li>Enter, review, and maintain information with a focus on accuracy and consistency.</li>
+                <li>Support organized recordkeeping and reliable data processes for campus operations.</li>
+                <li>Apply attention to detail and follow established procedures to reduce errors and maintain useful records.</li>
+              </ul>
+            </div>
+
+            <div class="item">
+              <h3>Hydration Specialist Supervisor</h3>
+              <p class="organization">BYU Y-Job, Smith Fieldhouse</p>
+              <p class="date">June 2022 – September 2022</p>
+              <ul>
+                <li>Supervised hydration support for athletic activities and BYU summer sports camps.</li>
+                <li>Helped coordinate supplies, staff responsibilities, and participant needs in a time-sensitive environment.</li>
+                <li>Developed practical leadership, planning, communication, and operations support experience.</li>
+              </ul>
+            </div>
+
+            <div class="item">
+              <h3>Missionary</h3>
+              <p class="organization">The Church of Jesus Christ of Latter-day Saints — Brazil and West Virginia</p>
+              <p class="date">October 2019 – 2021</p>
+              <ul>
+                <li>Served communities in Brazil and West Virginia while developing strong communication and leadership skills.</li>
+                <li>Planned activities, taught individuals and groups, and adapted to diverse cultural and interpersonal situations.</li>
+                <li>Built Portuguese language ability and strengthened discipline, resilience, and relationship-building skills.</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>Relevant Strengths for Business & Supply Chain Roles</h2>
+            <ul>
+              <li><strong>Data and accuracy:</strong> Experience maintaining records and handling detail-oriented information.</li>
+              <li><strong>Operations support:</strong> Background supporting daily workflows, supplies, scheduling, and administrative processes.</li>
+              <li><strong>Leadership:</strong> Experience supervising, mentoring, planning activities, and coordinating responsibilities.</li>
+              <li><strong>Communication:</strong> Comfortable working with students, faculty, staff, community members, and diverse groups.</li>
+              <li><strong>Technical foundation:</strong> Familiar with SQL, VBA, and HTML, with a willingness to keep learning business technology tools.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>References</h2>
+            <ul class="compact-list">
+              <li>
+                <span class="reference-name">Dr. Nathan Seamons</span> —
+                Assistant Professor, BYU Symphonic Band<br />
+                <a href="mailto:Nate.Seamons@byu.edu">Nate.Seamons@byu.edu</a>
+              </li>
+              <li>
+                <span class="reference-name">Shannon Loudin</span> —
+                West Virginia State Police Officer<br />
+                <a href="mailto:Shannonloudin@gmail.com">Shannonloudin@gmail.com</a>
+              </li>
+              <li>
+                <span class="reference-name">Jake Christofferson, ATC</span> —
+                Head Athletic Trainer, BYU Summer Sports Camps<br />
+                <a href="mailto:Jchristofferson88@gmail.com">Jchristofferson88@gmail.com</a>
+              </li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
